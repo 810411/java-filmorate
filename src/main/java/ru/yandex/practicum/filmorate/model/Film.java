@@ -7,10 +7,13 @@ import ru.yandex.practicum.filmorate.util.validator.Positive;
 import javax.validation.constraints.*;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 @Data
 public class Film {
-    private int id;
+    private UUID id;
     @NotNull
     @NotBlank
     private String name;
@@ -24,4 +27,5 @@ public class Film {
     @NotNull
     @Positive
     private Duration duration;
+    private Set<UUID> likes;
 }
