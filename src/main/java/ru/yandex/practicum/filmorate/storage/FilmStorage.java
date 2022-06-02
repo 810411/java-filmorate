@@ -4,16 +4,15 @@ import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface FilmStorage {
     List<Film> getAll();
 
-    Optional<Film> get(UUID id);
+    Optional<Film> get(int id);
 
-    Optional<Film> add(Film film);
+    Film add(Film film);
 
-    Optional<Film> update(Film film);
+    Film update(Film film);
 
-    Optional<Film> delete(UUID id);
+    Optional<Film> delete(int id);
 }

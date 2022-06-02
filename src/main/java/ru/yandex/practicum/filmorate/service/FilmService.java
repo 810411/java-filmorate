@@ -2,10 +2,14 @@ package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,16 +22,17 @@ public class FilmService {
         this.filmStorage = filmStorage;
     }
 
-    public List<Film> getMostPopular() {
+    public Set<Film> getMostPopular(int count) {
         return filmStorage.getAll().stream()
+                .filter(film -> film.getLikes() != null && film.getLikes().size() > 0)
                 .sorted(Comparator.comparingInt(film -> film.getLikes().size()))
-                .limit(10)
-                .collect(Collectors.toList());
+                .limit(count)
+                .collect(Collectors.toSet());
     }
 
-    public void like(UUID filmId, UUID userId, int rating) {
-        Film film = filmStorage.get(filmId).orElseThrow(IllegalArgumentException::new);
-        Set<UUID> likes = film.getLikes();
+    public void like(int filmId, int userId) {
+        Film film = filmStorage.get(filmId).orElseThrow(NotFoundException::new);
+        Set<Integer> likes = film.getLikes();
         if (likes == null) {
             likes = new HashSet<>();
         }
@@ -35,11 +40,11 @@ public class FilmService {
         film.setLikes(likes);
     }
 
-    public void unlike(UUID filmId, UUID userId) {
-        Film film = filmStorage.get(filmId).orElseThrow(IllegalArgumentException::new);
-        Set<UUID> likes = film.getLikes();
+    public void unlike(int filmId, int userId) {
+        Film film = filmStorage.get(filmId).orElseThrow(NotFoundException::new);
+        Set<Integer> likes = film.getLikes();
         if (likes == null)
-            return;
+            throw new NotFoundException();
         likes.remove(userId);
     }
 }
