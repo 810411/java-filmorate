@@ -9,7 +9,7 @@ import java.lang.annotation.*;
  * {@link java.time.format.DateTimeFormatter#ISO_LOCAL_DATE}
  * ("yyyy-MM-dd").
  */
-@Target({ ElementType.FIELD })
+@Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = DateNotBeforeValidator.class)
 @Documented
