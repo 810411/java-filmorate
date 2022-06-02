@@ -27,7 +27,8 @@ public class Film {
     private LocalDate releaseDate;
     @NotNull
     @Positive
-    @JsonFormat(shape = JsonFormat.Shape.NUMBER_INT )
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER_INT)
     private Duration duration;
     private Set<Integer> likes;
+    private Integer rate;
 }

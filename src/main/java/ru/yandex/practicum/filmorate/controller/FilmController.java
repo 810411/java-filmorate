@@ -11,7 +11,6 @@ import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Slf4j
 @RestController
@@ -40,6 +39,7 @@ public class FilmController {
     @PostMapping
     public Film add(@RequestBody @Valid Film film) {
         film = filmStorage.add(film);
+        System.out.println(film);
         log.info("New film with id = {} added into store", film.getId());
         return film;
     }
@@ -52,7 +52,7 @@ public class FilmController {
     }
 
     @GetMapping("/popular")
-    public Set<Film> getMostPopular(@RequestParam Optional<Integer> count) {
+    public List<Film> getMostPopular(@RequestParam Optional<Integer> count) {
         return filmService.getMostPopular(count.orElse(10));
     }
 

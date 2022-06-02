@@ -8,9 +8,10 @@ import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Optional;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class FilmService {
@@ -22,12 +23,16 @@ public class FilmService {
         this.filmStorage = filmStorage;
     }
 
-    public Set<Film> getMostPopular(int count) {
-        return filmStorage.getAll().stream()
-                .filter(film -> film.getLikes() != null && film.getLikes().size() > 0)
-                .sorted(Comparator.comparingInt(film -> film.getLikes().size()))
+    public List<Film> getMostPopular(int count) {
+        return Stream.concat(
+                        filmStorage.getAll().stream()
+                                .filter(film -> film.getLikes() != null && film.getLikes().size() > 0)
+                                .sorted(Comparator.comparingInt(film -> film.getLikes().size())),
+                        filmStorage.getAll().stream()
+                                .filter(film -> film.getRate() != null)
+                )
                 .limit(count)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
     public void like(int filmId, int userId) {
